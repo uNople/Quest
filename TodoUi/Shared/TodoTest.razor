@@ -8,6 +8,7 @@
     {
         <li>@todo.Title</li>
         <p>@todo.Description</p>
+        <input type="checkbox" @bind="todo.IsCompleted">
     }
 </ul>
 
@@ -15,6 +16,11 @@
     private static Random _rng = new Random();
     private void AddTask()
     {
-        TodoService.AddTask($"Task {_rng.Next()}", $"Description {_rng.Next()}");
+        TodoService.AddTask($"Task {_rng.Next()}", $"Description {_rng.Next()}", RandomBool());
+    }
+
+    private bool RandomBool()
+    {
+        return _rng.Next(0, 2) == 0 ? false : true;
     }
 }

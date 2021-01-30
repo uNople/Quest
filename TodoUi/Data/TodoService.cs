@@ -8,12 +8,13 @@ namespace TodoUi.Data
     {
         public List<Todo> Tasks { get; set; } = new List<Todo>();
         
-        public void AddTask(string title, string description)
+        public void AddTask(string title, string description, bool isCompleted)
         {
             Tasks.Add(new Todo
             {
                 Description = description,
-                Title = title
+                Title = title,
+                IsCompleted = isCompleted,
             });
         }
     }
