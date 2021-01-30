@@ -1,13 +1,5 @@
 Path to 'completing' the app
-Tidy:
-- Delete WeatherForecast stuff
-- Delete counter
-- Delete sidebar things
-
 Implement:
-- Create Task/Todo object for holding data
-- Create service for saving/loading TODO data
-- Use this service to save/load TODO data to memory (for now)
 - Add abilty to complete tasks
 - Add test project + tests
 
