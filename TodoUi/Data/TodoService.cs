@@ -7,7 +7,7 @@ namespace TodoUi.Data
 {
     public class TodoService
     {
-        public List<Todo> Tasks { get; set; } = new List<Todo>();
+        public List<Todo> Todos { get; set; } = new List<Todo>();
         private static Random _rng = new Random();
 
         public void UpdateHeading(MouseEventArgs e, Todo todo)
@@ -15,18 +15,19 @@ namespace TodoUi.Data
             Delete(todo);
         }
 
-        public void AddTask()
+        public void CreateTodo()
         {
-            AddTask($"Task {_rng.Next()}", $"Description {_rng.Next()}", RandomBool());
+            CreateTodo($"Task {_rng.Next()}", $"Description {_rng.Next()}", RandomBool());
         }
 
         private bool RandomBool()
         {
             return _rng.Next(0, 2) == 0 ? false : true;
         }
-        private void AddTask(string title, string description, bool isCompleted)
+
+        private void CreateTodo(string title, string description, bool isCompleted)
         {
-            Tasks.Add(new Todo
+            Todos.Add(new Todo
             {
                 Description = description,
                 Title = title,
@@ -34,9 +35,9 @@ namespace TodoUi.Data
             });
         }
 
-        private void Delete(Todo todo)
+        public void Delete(Todo todo)
         {
-            Tasks.Remove(todo);
+            Todos.Remove(todo);
         }
     }
 }
