@@ -1,7 +1,7 @@
 @using TodoUi.Data
 @inject TodoService TodoService
 
-<button class="btn btn-primary" @onclick="AddTask">Click me</button>
+<button class="btn btn-primary" @onclick="TodoService.AddTask">Click me</button>
 
 <ul>
     @foreach (var todo in TodoService.Tasks)
@@ -9,25 +9,6 @@
         <li>@todo.Title</li>
         <p>@todo.Description</p>
         <input type="checkbox" @bind="todo.IsCompleted">
-        <button class="btn btn-secondary" @onclick="@(e => UpdateHeading(e, todo))">Delete</button>
+        <button class="btn btn-secondary" @onclick="@(e => TodoService.UpdateHeading(e, todo))">Delete</button>
     }
 </ul>
-
-@code {
-    private static Random _rng = new Random();
-
-    private void UpdateHeading(MouseEventArgs e, Todo todo)
-    {
-        TodoService.Delete(todo);
-    }
-
-    private void AddTask()
-    {
-        TodoService.AddTask($"Task {_rng.Next()}", $"Description {_rng.Next()}", RandomBool());
-    }
-
-    private bool RandomBool()
-    {
-        return _rng.Next(0, 2) == 0 ? false : true;
-    }
-}
