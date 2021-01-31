@@ -1,7 +1,1 @@
 Path to 'completing' the app
-Implement:
-
-
-Storage:
-- Add EF Core with sqlite (for now)
-- Add Migrations

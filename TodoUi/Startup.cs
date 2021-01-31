@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TodoUi.Data;
+using TodoUi.Database;
 
 namespace TodoUi
 {
@@ -28,7 +30,9 @@ namespace TodoUi
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<TodoService>();
+            services.AddScoped<TodoService>();
+            services.AddDbContext<TodoDbContext>(options => options.UseSqlite("Data Source=Application.db"));
+            services.AddScoped<ITodoDbContext>(x => x.GetService<TodoDbContext>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +59,17 @@ namespace TodoUi
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            MigrateDb(app);
+        }
+
+        private void MigrateDb(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<ITodoDbContext>();
+                context.Migrate();
+            }
         }
     }
 }

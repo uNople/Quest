@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoUi.Data
 {
+    [Table("Todos")]
     public class Todo
     {
         [Key]
