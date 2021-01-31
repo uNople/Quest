@@ -9,11 +9,18 @@
         <li>@todo.Title</li>
         <p>@todo.Description</p>
         <input type="checkbox" @bind="todo.IsCompleted">
+        <button class="btn btn-secondary" @onclick="@(e => UpdateHeading(e, todo))">Delete</button>
     }
 </ul>
 
 @code {
     private static Random _rng = new Random();
+
+    private void UpdateHeading(MouseEventArgs e, Todo todo)
+    {
+        TodoService.Delete(todo);
+    }
+
     private void AddTask()
     {
         TodoService.AddTask($"Task {_rng.Next()}", $"Description {_rng.Next()}", RandomBool());

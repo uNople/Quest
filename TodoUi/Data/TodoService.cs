@@ -17,5 +17,10 @@ namespace TodoUi.Data
                 IsCompleted = isCompleted,
             });
         }
+
+        public void Delete(Todo todo)
+        {
+            Tasks.Remove(todo);
+        }
     }
 }
