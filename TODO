@@ -1,6 +1,6 @@
 Path to 'completing' the app
 Implement:
-- Add test project + tests
+
 
 Storage:
 - Add EF Core with sqlite (for now)

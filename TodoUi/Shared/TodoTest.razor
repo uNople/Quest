@@ -1,7 +1,11 @@
 @using TodoUi.Data
 @inject TodoService TodoService
 
-<button class="btn btn-primary" @onclick="TodoService.CreateTodo">Click me</button>
+<h2>Task dashboard</h2>
+
+<input type="text" @bind="Title" />
+<input type="text" @bind="Description" />
+<button class="btn btn-primary" @onclick="CreateTodo">Add a task</button>
 
 <ul>
     @foreach (var todo in TodoService.Todos)
@@ -9,6 +13,19 @@
         <li>@todo.Title</li>
         <p>@todo.Description</p>
         <input type="checkbox" @bind="todo.IsCompleted">
-        <button class="btn btn-secondary" @onclick="@(e => TodoService.UpdateHeading(e, todo))">Delete</button>
+        <button class="btn btn-secondary" @onclick="@(e => TodoService.Delete(todo))">Delete</button>
     }
 </ul>
+
+@code
+{
+    private string Title { get; set; }
+    private string Description { get; set; }
+
+    private void CreateTodo()
+    {
+        TodoService.Create(Title, Description);
+        Title = "";
+        Description = "";
+    }
+}

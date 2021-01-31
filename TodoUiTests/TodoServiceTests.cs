@@ -12,7 +12,7 @@ namespace TodoUiTests
         public void When_adding_a_todo_Then_todo_exists_in_the_collection()
         {
             var service = new TodoService();
-            service.CreateTodo();
+            service.Create("", "");
             service.Todos.Count.Should().Be(1);
         }
 
@@ -20,7 +20,7 @@ namespace TodoUiTests
         public void When_deleting_a_todo_Then_todo_no_longer_exists_in_the_collection()
         {
             var service = new TodoService();
-            service.CreateTodo();
+            service.Create("", "");
             service.Todos.Count.Should().Be(1);
             var todo = service.Todos.First();
             service.Delete(todo);
