@@ -1,6 +1,3 @@
-@using TodoUi.Data
-@inject TodoService TodoService
-
 <h2>Task dashboard</h2>
 
 <input type="text" @bind="Title" />
@@ -16,16 +13,3 @@
         <button class="btn btn-secondary" @onclick="@(e => TodoService.Delete(todo))">Delete</button>
     }
 </ul>
-
-@code
-{
-    private string Title { get; set; }
-    private string Description { get; set; }
-
-    private void CreateTodo()
-    {
-        TodoService.Create(Title, Description);
-        Title = "";
-        Description = "";
-    }
-}

@@ -1,0 +1,1 @@
+- Code-behind in separate.cs and not in .razor
