@@ -58,6 +58,17 @@ namespace TodoUi
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            MigrateDb(app);
+        }
+
+        private void MigrateDb(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
+                db.Database.Migrate();
+            }
         }
     }
 }
