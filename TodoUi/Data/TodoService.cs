@@ -9,16 +9,17 @@ namespace TodoUi.Data
 {
     public class TodoService
     {
-        private readonly TodoDbContext _todoDbContext;
-
-        public TodoService([NotNull]TodoDbContext todoDbContext)
+        private readonly ITodoDbContext _todoDbContext;
+        public TodoService([NotNull]ITodoDbContext todoDbContext)
         {
             _todoDbContext = todoDbContext;
         }
 
+        public async Task<List<Todo>> Get() => await _todoDbContext.Get();
+
         public async Task Create(string title, string description)
         {
-            _todoDbContext.Todos.Add(new Todo
+            Todos.Add(new Todo
             {
                 Description = description,
                 Title = title,
@@ -28,7 +29,7 @@ namespace TodoUi.Data
 
         public async Task Delete(Todo todo)
         {
-            _todoDbContext.Todos.Remove(todo);
+            Todos.Remove(todo);
             await _todoDbContext.SaveChangesAsync();
         }
     }

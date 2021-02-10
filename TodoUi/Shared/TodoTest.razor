@@ -1,3 +1,6 @@
+@using TodoUi.Data
+@using TodoUi.Database
+
 <h2>Task dashboard</h2>
 
 <input type="text" @bind="Title" />
@@ -5,11 +8,11 @@
 <button class="btn btn-primary" @onclick="CreateTodo">Add a task</button>
 
 <ul>
-    @foreach (var todo in TodoDbContext.Todos)
+    @foreach (var todo in TodoService.Todos)
     {
         <li>@todo.Title</li>
         <p>@todo.Description</p>
         <input type="checkbox" @bind="todo.IsCompleted">
-        <button class="btn btn-secondary" @onclick="@(e => TodoService.Delete(todo))">Delete</button>
+        <button class="btn btn-secondary" @onclick="@(e => Delete(todo))">Delete</button>
     }
 </ul>

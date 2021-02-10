@@ -32,6 +32,7 @@ namespace TodoUi
             services.AddServerSideBlazor();
             services.AddScoped<TodoService>();
             services.AddDbContext<TodoDbContext>(options => options.UseSqlite("Data Source=Application.db"));
+            services.AddScoped<ITodoDbContext>(x => x.GetService<TodoDbContext>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
