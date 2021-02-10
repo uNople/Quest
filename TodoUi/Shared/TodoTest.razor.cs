@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoUi.Data;
+using TodoUi.Database;
 
 namespace TodoUi.Shared
 {
@@ -11,12 +12,14 @@ namespace TodoUi.Shared
     {
         [Inject]
         public TodoService TodoService { get; set; }
+        [Inject]
+        public TodoDbContext TodoDbContext { get; set; }
         private string Title { get; set; }
         private string Description { get; set; }
 
-        private void CreateTodo()
+        private async Task CreateTodo()
         {
-            TodoService.Create(Title, Description);
+            await TodoService.Create(Title, Description);
             Title = "";
             Description = "";
         }

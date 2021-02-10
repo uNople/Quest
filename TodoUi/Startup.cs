@@ -30,7 +30,7 @@ namespace TodoUi
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<TodoService>();
+            services.AddScoped<TodoService>();
             services.AddDbContext<TodoDbContext>(options => options.UseSqlite("Data Source=Application.db"));
         }
 
