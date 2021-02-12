@@ -12,7 +12,7 @@ using NSubstitute;
 
 namespace TodoUiTests
 {
-    public class TodoServiceTests
+    public class TodoServiceTestsUsingTestDouble
     {
         private class DbTestDouble : ITodoDbContext
         {
@@ -39,24 +39,25 @@ namespace TodoUiTests
         }
 
         [Fact]
-        public async Task When_adding_a_todo_Then_todo_exists_in_the_collection()
+        public async Task When_adding_a_todo_Then_dbContext_is_called_to_add_it()
         {
-            var dbTestDoble = Substitute.For<ITodoDbContext>();
+            var dbTestDoble = new DbTestDouble();
             var service = new TodoService(dbTestDoble);
-            await service.Create("", "");
-            await dbTestDoble.Received(1).Add(Arg.Any<Todo>());
+            await service.Create("title", "description");
+            dbTestDoble.Todos.Count.Should().Be(1);
+            dbTestDoble.Todos.First().Should().BeEquivalentTo(new Todo() {Title = "title", Description = "description"});
         }
 
         [Fact]
-        public async Task When_deleting_a_todo_Then_todo_no_longer_exists_in_the_collection()
+        public async Task When_deleting_a_todo_Then_dbContext_is_called_to_delete_it()
         {
-            var dbTestDoble = Substitute.For<ITodoDbContext>();
+            var dbTestDoble = new DbTestDouble();
             var service = new TodoService(dbTestDoble);
             await service.Create("", "");
-            await dbTestDoble.Received(1).Add(Arg.Any<Todo>());
-            var todo = new Todo();
+            dbTestDoble.Todos.Count.Should().Be(1);
+            var todo = dbTestDoble.Todos.First();
             await service.Delete(todo);
-            await dbTestDoble.Received(1).Delete(Arg.Any<Todo>());
+            dbTestDoble.Todos.Count.Should().Be(0);
         }
     }
 }
