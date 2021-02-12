@@ -351,3 +351,4 @@ MigrationBackup/
 
 # Ignore sqlite database files
 *.db
+/TodoUi/database.json

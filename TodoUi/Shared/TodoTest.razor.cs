@@ -14,7 +14,7 @@ namespace TodoUi.Shared
         public TodoService TodoService { get; set; }
         private string Title { get; set; }
         private string Description { get; set; }
-        private List<Todo> Todos { get; set;}
+        private List<Todo> Todos { get; set;} = new List<Todo>();
 
         private async Task CreateTodo()
         {

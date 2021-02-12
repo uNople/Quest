@@ -33,6 +33,8 @@ namespace TodoUi
             services.AddScoped<TodoService>();
             services.AddDbContext<TodoDbContext>(options => options.UseSqlite("Data Source=Application.db"));
             services.AddScoped<ITodoDbContext>(x => x.GetService<TodoDbContext>());
+
+            //services.AddScoped<ITodoDbContext, FileSystemDatabase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,8 +69,8 @@ namespace TodoUi
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
-                db.Database.Migrate();
+                var db = scope.ServiceProvider.GetRequiredService<ITodoDbContext>();
+                db.Migrate();
             }
         }
     }
