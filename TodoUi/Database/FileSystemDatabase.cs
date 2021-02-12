@@ -13,8 +13,10 @@ namespace TodoUi.Database
         private const string _fileName = "database.json";
         private bool _isLoaded { get; set; } = false;
         public List<Todo> Todos { get; set; } = new List<Todo>();
+        public int _identity { get; set; }
         public async Task Add(Todo todo)
         {
+            todo.Id = _identity++;
             await Task.Run(() => Todos.Add(todo));
             Save();
         }
@@ -34,6 +36,15 @@ namespace TodoUi.Database
                     var file = File.ReadAllText(_fileName);
                     Todos = JsonConvert.DeserializeObject<List<Todo>>(file);
                 }
+
+                if (Todos.Any())
+                {
+                    _identity = Todos.Max(x => x.Id + 1);
+                }
+                else
+                {
+                    _identity = 1;
+                }
             }
             return await Task.Run(() => Todos);
         }
@@ -47,6 +58,10 @@ namespace TodoUi.Database
         {
             var json = JsonConvert.SerializeObject(Todos, Formatting.Indented);
             File.WriteAllText(_fileName, json);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
