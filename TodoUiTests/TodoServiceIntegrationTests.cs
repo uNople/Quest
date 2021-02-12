@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -73,6 +75,29 @@ namespace TodoUiTests
                 var todo3 = new Todo() { Title = "test3", Description = "best3", Id = 3};
                 var todo3FromDb = (await service.Get()).Skip(1).First();
                 todo3FromDb.Should().BeEquivalentTo(todo3);
+            }
+        }
+
+        [Fact]
+        public void When_creating_the_app_Then_it_should_not_error()
+        {
+
+            var host = TodoUi.Program.CreateHostBuilder(new string[0]).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+                Action act = () => scope.ServiceProvider.GetService<ITodoDbContext>();
+                act.Should().NotThrow();
+            }
+        }
+
+        [Fact]
+        public void When_creating_the_app_Then_we_can_resolve_todo_service()
+        {
+            var host = TodoUi.Program.CreateHostBuilder(new string[0]).Build();
+            using (var scope = host.Services.CreateScope())
+            {
+                Action act = () => scope.ServiceProvider.GetService<TodoService>();
+                act.Should().NotThrow();
             }
         }
     }
