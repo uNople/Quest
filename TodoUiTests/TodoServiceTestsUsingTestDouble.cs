@@ -27,6 +27,10 @@ namespace TodoUiTests
                 await Task.Run(() => Todos.Remove(todo));
             }
 
+            public void Dispose()
+            {
+            }
+
             public async Task<List<Todo>> Get()
             {
                 return await Task.Run(() => Todos);
