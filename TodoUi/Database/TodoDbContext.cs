@@ -8,7 +8,7 @@ using TodoUi.Data;
 
 namespace TodoUi.Database
 {
-    public class TodoDbContext : DbContext
+    public class TodoDbContext : DbContext, ITodoDbContext
     {
         public TodoDbContext([NotNull] DbContextOptions options) : base(options)
         {

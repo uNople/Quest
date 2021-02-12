@@ -19,18 +19,16 @@ namespace TodoUi.Data
 
         public async Task Create(string title, string description)
         {
-            Todos.Add(new Todo
+            await _todoDbContext.Add(new Todo
             {
                 Description = description,
                 Title = title,
             });
-            await _todoDbContext.SaveChangesAsync();
         }
 
         public async Task Delete(Todo todo)
         {
-            Todos.Remove(todo);
-            await _todoDbContext.SaveChangesAsync();
+            await _todoDbContext.Delete(todo);
         }
     }
 }

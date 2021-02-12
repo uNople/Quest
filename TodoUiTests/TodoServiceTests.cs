@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
+using NSubstitute;
 
 namespace TodoUiTests
 {
@@ -40,22 +41,22 @@ namespace TodoUiTests
         [Fact]
         public async Task When_adding_a_todo_Then_todo_exists_in_the_collection()
         {
-            var dbTestDoble = new DbTestDouble();
+            var dbTestDoble = Substitute.For<ITodoDbContext>();
             var service = new TodoService(dbTestDoble);
             await service.Create("", "");
-            dbTestDoble.Todos.Count().Should().Be(1);
+            await dbTestDoble.Received(1).Add(Arg.Any<Todo>());
         }
 
         [Fact]
         public async Task When_deleting_a_todo_Then_todo_no_longer_exists_in_the_collection()
         {
-            var dbTestDoble = new DbTestDouble();
+            var dbTestDoble = Substitute.For<ITodoDbContext>();
             var service = new TodoService(dbTestDoble);
             await service.Create("", "");
-            dbTestDoble.Todos.Count().Should().Be(1);
-            var todo = dbTestDoble.Todos.First();
+            await dbTestDoble.Received(1).Add(Arg.Any<Todo>());
+            var todo = new Todo();
             await service.Delete(todo);
-            dbTestDoble.Todos.Should().BeEmpty();
+            await dbTestDoble.Received(1).Delete(Arg.Any<Todo>());
         }
     }
 }
