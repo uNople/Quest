@@ -3,7 +3,7 @@
 
 <div style="display: flex; justify-content: space-between">
     <h2>Task dashboard</h2>
-    <button class="btn btn-primary" @onclick="SaveData">Save Data</button>
+    <button class="btn btn-primary" @onclick="SaveData" disabled="@IsSaveHappening">Save Data</button>
 </div>
 <input type="text" @bind="Title" />
 <input type="text" @bind="Description" />
