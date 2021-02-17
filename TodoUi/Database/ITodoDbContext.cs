@@ -13,5 +13,6 @@ namespace TodoUi.Database
         Task Add(Todo todo);
         Task Delete(Todo todo);
         void Migrate();
+        Task SaveChangesAsync();
     }
 }

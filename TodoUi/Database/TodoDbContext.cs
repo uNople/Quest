@@ -33,5 +33,10 @@ namespace TodoUi.Database
         {
             Database.Migrate();
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
+        }
     }
 }

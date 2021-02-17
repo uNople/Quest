@@ -30,5 +30,10 @@ namespace TodoUi.Data
         {
             await _todoDbContext.Delete(todo);
         }
+
+        internal async Task SaveChanges()
+        {
+            await _todoDbContext.SaveChangesAsync();
+        }
     }
 }

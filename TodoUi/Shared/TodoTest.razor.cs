@@ -35,5 +35,10 @@ namespace TodoUi.Shared
             Todos = await TodoService.Get();
             this.StateHasChanged();
         }
+
+        private async Task SaveData()
+        {
+            await TodoService.SaveChanges();
+        }
     }
 }

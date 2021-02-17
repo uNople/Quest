@@ -40,6 +40,11 @@ namespace TodoUiTests
             {
                 
             }
+
+            public Task SaveChangesAsync()
+            {
+                return Task.CompletedTask;
+            }
         }
 
         [Fact]

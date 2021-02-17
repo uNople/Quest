@@ -63,5 +63,10 @@ namespace TodoUi.Database
         public void Dispose()
         {
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await Task.Run(() => Save());
+        }
     }
 }
