@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TodoUi.Data;
 using TodoUi.Database;
@@ -17,6 +18,50 @@ namespace TodoUi.Shared
         private List<Todo> Todos { get; set; } = new List<Todo>();
         private bool IsSaveHappening { get; set; }
         private string SaveDataButtonText { get; set; }
+        public Timer BackgroundSaveTimer { get; }
+        private bool _timerUpdating { get; set; }
+        private SemaphoreSlim _lockObject = new SemaphoreSlim(1, 1);
+
+        public TodoTest()
+        {
+            BackgroundSaveTimer = new Timer(SaveFromTimer, null, (int)TimeSpan.FromSeconds(5).TotalMilliseconds, Timeout.Infinite);
+        }
+
+        /// <summary>
+        /// This checks if any todo has the "HasChanges" flag set, and if so, it saves + refreshes the UI
+        /// </summary>
+        /// <param name="state"></param>
+        private void SaveFromTimer(object state)
+        {
+            if (_timerUpdating)
+                return;
+
+            _lockObject.Wait();
+            _timerUpdating = true;
+
+            try
+            {
+                BackgroundSaveTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                if (Todos.Any(x => x.HasChanges))
+                {
+                    Task.Run(async () => await InvokeAsync(async () => 
+                    {
+                        await SaveData();
+                        // TODO: work out what the threshold for needing to call this is
+                        // It seems like it works fine up until a certain number of changes per second
+                        StateHasChanged();
+                        await GetTodos();
+                        StateHasChanged();
+                    }));
+                }
+                BackgroundSaveTimer.Change((int)TimeSpan.FromSeconds(5).TotalMilliseconds, Timeout.Infinite);
+            }
+            finally
+            {
+                _lockObject.Release();
+                _timerUpdating = false;
+            }
+        }
 
         private class SaveText
         {
@@ -31,10 +76,16 @@ namespace TodoUi.Shared
                 async () =>
                 {
                     await TodoService.Create(Title, Description);
-                    Todos = await TodoService.Get();
+                    await GetTodos();
                     Title = "";
                     Description = "";
                 });
+        }
+
+        private async Task GetTodos()
+        {
+            Todos = await TodoService.Get();
+            Todos.ForEach(x => x.HasChanges = false);
         }
 
         private async Task Delete(Todo todo)
@@ -43,13 +94,13 @@ namespace TodoUi.Shared
                 async () =>
                 {
                     await TodoService.Delete(todo);
-                    Todos = await TodoService.Get();
+                    await GetTodos();
                 });
         }
 
         protected override async Task OnInitializedAsync()
         {
-            Todos = await TodoService.Get();
+            await GetTodos();
             SaveDataButtonText = SaveText.Save;
             this.StateHasChanged();
         }
@@ -68,6 +119,7 @@ namespace TodoUi.Shared
                 await action();
                 await Task.Delay(250);
                 SaveDataButtonText = SaveText.Saved;
+                // TODO: Work out why we need this to update the UI. See background thread comment too
                 StateHasChanged();
                 await Task.Delay(250);
             }

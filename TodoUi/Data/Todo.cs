@@ -11,6 +11,23 @@ namespace TodoUi.Data
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public bool IsCompleted { get; set; }
+        private bool _isCompleted;
+
+        public bool IsCompleted
+        {
+            get { return _isCompleted; }
+            set
+            {
+                HasChanges = value != _isCompleted;
+                _isCompleted = value;
+                OnChanged?.Invoke();
+            }
+        }
+
+        [NotMapped]
+        public bool HasChanges { get; set; }
+
+        public event OnChangedEventHandler OnChanged;
+        public delegate void OnChangedEventHandler();
     }
 }
