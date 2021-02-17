@@ -16,6 +16,14 @@ namespace TodoUi.Shared
         private string Description { get; set; }
         private List<Todo> Todos { get; set; } = new List<Todo>();
         private bool IsSaveHappening { get; set; }
+        private string SaveDataButtonText { get; set; }
+
+        private class SaveText
+        {
+            public const string Save = "Save";
+            public const string Saving = "Saving";
+            public const string Saved = "✓";
+        }
 
         private async Task CreateTodo()
         {
@@ -42,6 +50,7 @@ namespace TodoUi.Shared
         protected override async Task OnInitializedAsync()
         {
             Todos = await TodoService.Get();
+            SaveDataButtonText = SaveText.Save;
             this.StateHasChanged();
         }
 
@@ -53,13 +62,18 @@ namespace TodoUi.Shared
         private async Task DoSaveAction(Func<Task> action)
         {
             IsSaveHappening = true;
+            SaveDataButtonText = SaveText.Saving;
             try
             {
                 await action();
                 await Task.Delay(250);
+                SaveDataButtonText = SaveText.Saved;
+                StateHasChanged();
+                await Task.Delay(250);
             }
             finally
             {
+                SaveDataButtonText = SaveText.Save;
                 IsSaveHappening = false;
             }
         }

@@ -3,19 +3,23 @@
 
 <div style="display: flex; justify-content: space-between">
     <h2>Task dashboard</h2>
-    <button class="btn btn-primary" @onclick="SaveData" disabled="@IsSaveHappening">Save Data</button>
+    <button class="btn btn-primary" style="width: 100px;" @onclick="SaveData" disabled="@IsSaveHappening">@SaveDataButtonText</button>
 </div>
 <input type="text" @bind="Title" />
 <input type="text" @bind="Description" />
-<button class="btn btn-primary" @onclick="CreateTodo">Add a task</button>
+<button class="btn btn-primary" @onclick="CreateTodo" disabled="@IsSaveHappening">Add a task</button>
 
 <ul>
     @foreach (var todo in Todos)
     {
-        <li>@todo.Title</li>
-        <p>@todo.Description</p>
-        <input type="checkbox" @bind="todo.IsCompleted">
-        <button class="btn btn-secondary" @onclick="@(e => Delete(todo))">Delete</button>
+        <li>
+            <div>
+                <p>@todo.Title</p>
+                <p>@todo.Description</p>
+                <input type="checkbox" @bind="todo.IsCompleted">
+                <button class="btn btn-secondary" @onclick="@(e => Delete(todo))" disabled="@IsSaveHappening">Delete</button>
+            </div>
+        </li>
     }
 </ul>
 
