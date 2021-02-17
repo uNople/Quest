@@ -18,49 +18,18 @@ namespace TodoUi.Shared
         private List<Todo> Todos { get; set; } = new List<Todo>();
         private bool IsSaveHappening { get; set; }
         private string SaveDataButtonText { get; set; }
-        public Timer BackgroundSaveTimer { get; }
-        private bool _timerUpdating { get; set; }
-        private SemaphoreSlim _lockObject = new SemaphoreSlim(1, 1);
 
-        public TodoTest()
+        private void SaveFromEvent()
         {
-            BackgroundSaveTimer = new Timer(SaveFromTimer, null, (int)TimeSpan.FromSeconds(5).TotalMilliseconds, Timeout.Infinite);
-        }
-
-        /// <summary>
-        /// This checks if any todo has the "HasChanges" flag set, and if so, it saves + refreshes the UI
-        /// </summary>
-        /// <param name="state"></param>
-        private void SaveFromTimer(object state)
-        {
-            if (_timerUpdating)
-                return;
-
-            _lockObject.Wait();
-            _timerUpdating = true;
-
-            try
+            Task.Run(async () => await InvokeAsync(async () => 
             {
-                BackgroundSaveTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                if (Todos.Any(x => x.HasChanges))
-                {
-                    Task.Run(async () => await InvokeAsync(async () => 
-                    {
-                        await SaveData();
-                        // TODO: work out what the threshold for needing to call this is
-                        // It seems like it works fine up until a certain number of changes per second
-                        StateHasChanged();
-                        await GetTodos();
-                        StateHasChanged();
-                    }));
-                }
-                BackgroundSaveTimer.Change((int)TimeSpan.FromSeconds(5).TotalMilliseconds, Timeout.Infinite);
-            }
-            finally
-            {
-                _lockObject.Release();
-                _timerUpdating = false;
-            }
+                await SaveData();
+                // TODO: work out what the threshold for needing to call this is
+                // It seems like it works fine up until a certain number of changes per second
+                StateHasChanged();
+                await GetTodos();
+                StateHasChanged();
+            }));
         }
 
         private class SaveText
@@ -84,8 +53,9 @@ namespace TodoUi.Shared
 
         private async Task GetTodos()
         {
+            Todos.ForEach(x => x.OnChanged -= SaveFromEvent);
             Todos = await TodoService.Get();
-            Todos.ForEach(x => x.HasChanges = false);
+            Todos.ForEach(x => x.OnChanged += SaveFromEvent);
         }
 
         private async Task Delete(Todo todo)

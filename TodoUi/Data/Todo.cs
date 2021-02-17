@@ -18,14 +18,10 @@ namespace TodoUi.Data
             get { return _isCompleted; }
             set
             {
-                HasChanges = value != _isCompleted;
                 _isCompleted = value;
                 OnChanged?.Invoke();
             }
         }
-
-        [NotMapped]
-        public bool HasChanges { get; set; }
 
         public event OnChangedEventHandler OnChanged;
         public delegate void OnChangedEventHandler();
