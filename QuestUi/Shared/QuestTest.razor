@@ -1,0 +1,26 @@
+<div style="display: flex; justify-content: space-between">
+    <h2>Task dashboard</h2>
+    <button class="btn btn-primary" style="width: 100px;" @onclick="SaveData" disabled="@IsSaveHappening">@SaveDataButtonText</button>
+</div>
+<input type="text" @bind="Title" />
+<input type="text" @bind="Description" />
+<button class="btn btn-primary" @onclick="CreateQuest" disabled="@IsSaveHappening">Add a task</button>
+
+<ul>
+    @foreach (var quest in Quests)
+    {
+        <li>
+            <div>
+                <p>@quest.Title</p>
+                <p>@quest.Description</p>
+                <input type="checkbox" @bind="quest.IsCompleted">
+                <button class="btn btn-secondary" @onclick="@(e => Delete(quest))" disabled="@IsSaveHappening">Delete</button>
+            </div>
+        </li>
+    }
+</ul>
+
+@code
+{
+
+}
