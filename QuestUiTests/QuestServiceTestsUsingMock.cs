@@ -13,8 +13,8 @@ namespace QuestUiTests
         {
             var questDbContext = Substitute.For<IQuestDbContext>();
             var service = new QuestService(questDbContext);
-            await service.Create("title", "description");
-            await questDbContext.Received(1).Add(Arg.Is<Quest>(x => x.Description == "description" && x.Title == "title"));
+            await service.Create("title", "description", Priority.High);
+            await questDbContext.Received(1).Add(Arg.Is<Quest>(x => x.Description == "description" && x.Title == "title" && x.Priority == Priority.High));
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace QuestUiTests
         {
             var questDbContext = Substitute.For<IQuestDbContext>();
             var service = new QuestService(questDbContext);
-            await service.Create("", "");
+            await service.Create("", "", Priority.Low);
             await questDbContext.Received(1).Add(Arg.Any<Quest>());
             var quest = new Quest();
             await service.Delete(quest);
