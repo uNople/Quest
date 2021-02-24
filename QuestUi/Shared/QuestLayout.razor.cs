@@ -6,7 +6,7 @@ using QuestUi.Data;
 
 namespace QuestUi.Shared
 {
-    public partial class QuestTest
+    public partial class QuestLayout
     {
         [Inject]
         public QuestService QuestService { get; set; }
