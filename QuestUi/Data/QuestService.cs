@@ -21,6 +21,7 @@ namespace QuestUi.Data
             {
                 Description = description,
                 Title = title,
+                Priority = "Low",
             });
         }
 

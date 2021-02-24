@@ -13,6 +13,7 @@
             <div>
                 <p>@quest.Title</p>
                 <p>@quest.Description</p>
+                <p>@quest.Priority</p>
                 <input type="checkbox" @bind="quest.IsCompleted">
                 <button class="btn btn-secondary" @onclick="@(e => Delete(quest))" disabled="@IsSaveHappening">Delete</button>
             </div>
