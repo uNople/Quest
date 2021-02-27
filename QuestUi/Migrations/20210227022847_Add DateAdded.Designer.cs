@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuestUi.Database;
 
 namespace QuestUi.Migrations
 {
     [DbContext(typeof(QuestDbContext))]
-    partial class TodoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210227022847_Add DateAdded")]
+    partial class AddDateAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -12,6 +12,7 @@ namespace QuestUi.Data
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public DateTimeOffset DateAdded { get; set; }
         public Priority Priority { get; set; }
         private bool _isCompleted;
         public bool IsCompleted

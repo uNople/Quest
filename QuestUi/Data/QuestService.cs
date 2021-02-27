@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace QuestUi.Data
                 Description = description,
                 Title = title,
                 Priority = priority,
+                DateAdded = DateTimeOffset.Now
             });
         }
 
