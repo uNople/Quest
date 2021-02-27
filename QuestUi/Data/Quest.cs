@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using QuestUi.Shared;
 
 namespace QuestUi.Data
 {
@@ -11,7 +12,7 @@ namespace QuestUi.Data
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Priority { get; set; }
+        public Priority Priority { get; set; }
         private bool _isCompleted;
         public bool IsCompleted
         {

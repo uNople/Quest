@@ -15,13 +15,13 @@ namespace QuestUi.Data
 
         public async Task<List<Quest>> Get() => await _questDbContext.Get();
 
-        public async Task Create(string title, string description)
+        public async Task Create(string title, string description, Priority priority)
         {
             await _questDbContext.Add(new Quest
             {
                 Description = description,
                 Title = title,
-                Priority = "Low",
+                Priority = priority,
             });
         }
 

@@ -1,9 +1,16 @@
+@using QuestUi.Data
 <div style="display: flex; justify-content: space-between">
     <h2>Task dashboard</h2>
     <button class="btn btn-primary" style="width: 100px;" @onclick="SaveData" disabled="@IsSaveHappening">@SaveDataButtonText</button>
 </div>
 <input type="text" @bind="Title" />
 <input type="text" @bind="Description" />
+<select @bind="Priority">
+    @foreach (var priority in Enum.GetValues(typeof(Priority)))
+    {
+        <option value="@priority">@priority</option>
+    }
+</select>
 <button class="btn btn-primary" @onclick="CreateQuest" disabled="@IsSaveHappening">Add a task</button>
 
 <ul>

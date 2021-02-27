@@ -48,7 +48,7 @@ namespace QuestUiTests
         {
             var dbTestDoble = new DbTestDouble();
             var service = new QuestService(dbTestDoble);
-            await service.Create("title", "description");
+            await service.Create("title", "description", Priority.Low);
             dbTestDoble.Quests.Count.Should().Be(1);
             dbTestDoble.Quests.First().Should().BeEquivalentTo(new Quest() {Title = "title", Description = "description"});
         }
@@ -58,7 +58,7 @@ namespace QuestUiTests
         {
             var dbTestDoble = new DbTestDouble();
             var service = new QuestService(dbTestDoble);
-            await service.Create("", "");
+            await service.Create("", "", Priority.Low);
             dbTestDoble.Quests.Count.Should().Be(1);
             var quest = dbTestDoble.Quests.First();
             await service.Delete(quest);

@@ -20,13 +20,13 @@ namespace QuestUiTests
 
             using (var db = new QuestDbContext(optionsBuilder.Options))
             {
-                var quest = new Quest() { Title = "test", Description = "best" };
+                var quest = new Quest() { Title = "test", Description = "best", Priority = Priority.High };
                 await db.Add(quest);
                 var shouldExist = (await db.Get()).First();
                 shouldExist.Should().BeEquivalentTo(quest);
                 shouldExist.Id.Should().Be(1);
 
-                quest = new Quest() { Title = "test2", Description = "best2" };
+                quest = new Quest() { Title = "test2", Description = "best2", Priority = Priority.High };
                 await db.Add(quest);
                 shouldExist = (await db.Get()).Skip(1).First();
                 shouldExist.Should().BeEquivalentTo(quest);
@@ -36,7 +36,7 @@ namespace QuestUiTests
                 shouldExist = (await db.Get()).Skip(1).FirstOrDefault();
                 shouldExist.Should().BeNull();
 
-                quest = new Quest() { Title = "test3", Description = "best3" };
+                quest = new Quest() { Title = "test3", Description = "best3", Priority = Priority.High };
                 await db.Add(quest);
                 shouldExist = (await db.Get()).Skip(1).First();
                 shouldExist.Should().BeEquivalentTo(quest);
@@ -53,13 +53,13 @@ namespace QuestUiTests
             using (var db = new QuestDbContext(optionsBuilder.Options))
             {
                 var service = new QuestService(db);
-                await service.Create("test", "best");
-                var quest = new Quest() { Title = "test", Description = "best", Id = 1 };
+                await service.Create("test", "best", Priority.High);
+                var quest = new Quest() { Title = "test", Description = "best", Id = 1, Priority = Priority.High };
                 var questFromDb = (await service.Get()).First();
                 questFromDb.Should().BeEquivalentTo(quest);
                 
-                await service.Create("test2", "best2");
-                var quest2 = new Quest() { Title = "test2", Description = "best2", Id = 2 };
+                await service.Create("test2", "best2", Priority.High);
+                var quest2 = new Quest() { Title = "test2", Description = "best2", Id = 2, Priority = Priority.High };
                 var quest2FromDb = (await service.Get()).Skip(1).First();
                 quest2FromDb.Should().BeEquivalentTo(quest2);
 
@@ -67,8 +67,8 @@ namespace QuestUiTests
                 var deletedQuest2 = (await service.Get()).Skip(1).FirstOrDefault();
                 deletedQuest2.Should().BeNull();
                 
-                await service.Create("test3", "best3");
-                var quest3 = new Quest() { Title = "test3", Description = "best3", Id = 3};
+                await service.Create("test3", "best3", Priority.High);
+                var quest3 = new Quest() { Title = "test3", Description = "best3", Id = 3, Priority = Priority.High};
                 var quest3FromDb = (await service.Get()).Skip(1).First();
                 quest3FromDb.Should().BeEquivalentTo(quest3);
             }

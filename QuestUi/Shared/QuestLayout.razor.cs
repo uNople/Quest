@@ -12,6 +12,7 @@ namespace QuestUi.Shared
         public QuestService QuestService { get; set; }
         private string Title { get; set; }
         private string Description { get; set; }
+        private Priority Priority { get; set; }
         private List<Quest> Quests { get; set; } = new List<Quest>();
         private bool IsSaveHappening { get; set; }
         private string SaveDataButtonText { get; set; }
@@ -41,10 +42,11 @@ namespace QuestUi.Shared
             await DoSaveAction(
                 async () =>
                 {
-                    await QuestService.Create(Title, Description);
+                    await QuestService.Create(Title, Description, Priority);
                     await GetQuests();
                     Title = "";
                     Description = "";
+                    Priority = Priority.Low;
                 });
         }
 
