@@ -1,3 +1,4 @@
+using MatBlazor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace QuestUi
             services.AddScoped<QuestService>();
             services.AddDbContext<QuestDbContext>(options => options.UseSqlite("Data Source=Application.db"));
             services.AddScoped<IQuestDbContext>(x => x.GetService<QuestDbContext>());
+            services.AddMatBlazor();
 
             //services.AddScoped<IQuestDbContext, FileSystemDatabase>();
         }
