@@ -1,33 +1,39 @@
 @using QuestUi.Data
 <div style="display: flex; justify-content: space-between">
     <h2>Task dashboard</h2>
-    <button class="btn btn-primary" style="width: 100px;" @onclick="SaveData" disabled="@IsSaveHappening">@SaveDataButtonText</button>
+    <MatButton Outlined="true" class="btn btn-primary" style="width: 100px;" @onclick="SaveData" disabled="@IsSaveHappening">@SaveDataButtonText</MatButton>
 </div>
-<input type="text" @bind="Title" />
-<input type="text" @bind="Description" />
-<select @bind="Priority">
-    @foreach (var priority in Enum.GetValues(typeof(Priority)))
+<MatTextField @bind-Value="Title" Label="Title"/>
+<MatTextField @bind-Value="Description" Label="Description" />
+<MatSelect Label="Select a priority" TValue="int" ValueChanged="@(v => Priority = (Priority)v)" Value="@((int)Priority)">
+    @foreach (int priority in Enum.GetValues(typeof(Priority)))
     {
-        <option value="@priority">@priority</option>
+    <MatOption TValue="int" Value="priority">@Enum.GetName(typeof(Priority), priority)</MatOption>
     }
-</select>
-<button class="btn btn-primary" @onclick="CreateQuest" disabled="@IsSaveHappening">Add a task</button>
+</MatSelect>
+<MatButton Outlined="true" class="btn btn-primary" @onclick="CreateQuest" disabled="@IsSaveHappening">Add a task</MatButton>
 
-<ul>
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">Completed</div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">Title</div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">Description</div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">Priority</div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">DateAdded</div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">Delete</div>
+    </div>
     @foreach (var quest in Quests)
     {
-        <li>
-            <div>
-                <p>@quest.Title</p>
-                <p>@quest.Description</p>
-                <p>@quest.Priority</p>
-                <p>@quest.DateAdded.ToLocalTime().ToString("g")</p>
-                <input type="checkbox" @bind="quest.IsCompleted">
-                <button class="btn btn-secondary" @onclick="@(e => Delete(quest))" disabled="@IsSaveHappening">Delete</button>
-            </div>
-        </li>
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1"><input type="checkbox" @bind="quest.IsCompleted"></div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">@quest.Title</div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">@quest.Description</div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">@quest.Priority</div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">@quest.DateAdded.ToLocalTime().ToString("g")</div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1"><MatButton Outlined="true" @onclick="@(e => Delete(quest))" disabled="@IsSaveHappening">Delete</MatButton></div>
+        </div>
     }
-</ul>
+</div>
 
 @code
 {
